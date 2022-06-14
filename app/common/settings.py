@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from os import path, environ
+from dotenv import load_dotenv
+from os import path, environ, getenv
 
-from app.common.config import settings
 
+load_dotenv()
 
 base_dir = path.dirname(path.dirname(path.dirname(path.abspath(__file__))))
 
@@ -16,27 +17,33 @@ class Config:
     """
     BASE_DIR: str = base_dir
 
-    DB_URL: str = settings.DB_URL
-    REDIS_URL: str = settings.REDIS_URL
-
-    EXCEPT_PATH_LIST = settings.EXCEPT_PATH_LIST
-    EXCEPT_PATH_REGEX: str = settings.EXCEPT_PATH_REGEX
-    EXPIRES_COOKIE_TIME: int = settings.EXPIRES_COOKIE_TIME
-
-    JWT_SECRET: str = settings.JWT_SECRET
-    JWT_ALGORITHM: str = settings.JWT_ALGORITHM
-
 
 @dataclass
 class LocalConfig(Config):
+    API_ENV: str = 'local'
+
+    DB_URL: str = getenv('DB_URL')
+    REDIS_URL: str = getenv('REDIS_URL')
+
+    EXCEPT_PATH_LIST = getenv('EXCEPT_PATH_LIST')
+    EXCEPT_PATH_REGEX: str = getenv('EXCEPT_PATH_REGEX')
+    EXPIRES_COOKIE_TIME: int = getenv('EXPIRES_COOKIE_TIME')
+
+    JWT_SECRET: str = getenv('JWT_SECRET')
+    JWT_ALGORITHM: str = getenv('JWT_ALGORITHM')
+
     TRUSTED_HOSTS = ["*"]
     ALLOW_SITE = ["*"]
 
 
 @dataclass
 class ProdConfig(Config):
+    API_ENV: str = 'prod'
+
     DB_URL: str = environ.get('DB_URL')
-    REDIS_URL: str = environ.get('REDIS_URL')
+    REDIS_HOST: str = environ.get('REDIS_HOST')
+    REDIS_PORT: str = environ.get('REDIS_PORT')
+    REDIS_USER: str = environ.get('REDIS_USER')
 
     EXCEPT_PATH_LIST = environ.get('EXCEPT_PATH_LIST')
     EXCEPT_PATH_REGEX: str = environ.get('EXCEPT_PATH_REGEX')

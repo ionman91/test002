@@ -4,21 +4,35 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
+from redis import Redis
+
 import logging
 import aioredis
 import json
 
 
-class Redis:
+logging.basicConfig(level=logging.INFO)
+
+
+class RedisConfig:
     def __init__(self, app: FastAPI = None, **kwargs):
         self._redis = None
         if app is not None:
             self.init_redis(**kwargs)
 
     def init_redis(self, **kwargs):
-        url = kwargs.get("REDIS_URL")
+        env = kwargs.get('API_ENV')
+        if env == 'local':
+            url = kwargs.get("REDIS_URL")
+            self._redis = aioredis.from_url(url)
+        elif env == 'prod':
+            host = kwargs.get('REDIS_HOST')
+            port = kwargs.get('REDIS_PORT')
+            user = kwargs.get('REDIS_USER')
+            self._redis = Redis(host=host, port=port, decode_responses=True, ssl=True, username=user)
 
-        self._redis = aioredis.from_url(url)
+        if self._redis.ping():
+            logging.info("Connected to Redis")
 
     async def set_value(self, key, value):
         await self._redis.set(key, value)
@@ -128,7 +142,7 @@ class SQLAlchemy:
         return self._engine
 
 
-rd = Redis()
+rd = RedisConfig()
 db = SQLAlchemy()
 
 Base = declarative_base()

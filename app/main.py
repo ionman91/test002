@@ -6,7 +6,6 @@ from dataclasses import asdict
 from starlette.middleware.cors import CORSMiddleware
 
 from app.database.connect import db, rd
-from app.common.config import settings
 from app.common.settings import conf
 from app.middleware.token_validator import AccessControl
 from app.middleware.trusted_hosts import TrustedHostMiddleware
@@ -20,7 +19,7 @@ def create_app():
     c = conf()
     app = FastAPI()
     conf_dict = asdict(c)
-    print(conf_dict)
+
     # db 와 redis 설정
     db.init_app(app, **conf_dict)
     rd.init_redis(**conf_dict)

@@ -7,7 +7,7 @@ from starlette.responses import JSONResponse
 from app.router.models import User
 from app.router.schemas import UserRegister, Token, SnsType, UserToken
 from app.database.connect import db
-from app.common.config import settings
+from app.common.settings import conf
 
 import jwt
 import bcrypt
@@ -59,9 +59,9 @@ async def is_username_exist(username: str):
     return False
 
 
-def create_access_token(*, data: dict = None, expires_delta: int = settings.EXPIRES_COOKIE_TIME):
+def create_access_token(*, data: dict = None, expires_delta: int = conf().EXPIRES_COOKIE_TIME):
     to_encode = data.copy()
     if expires_delta:
         to_encode.update({"exp": datetime.utcnow() + timedelta(hours=expires_delta)})
-    encoded_jwt = jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, conf().JWT_SECRET, algorithm=conf().JWT_ALGORITHM)
     return encoded_jwt

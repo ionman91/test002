@@ -10,7 +10,7 @@ from starlette.datastructures import Headers
 from starlette.responses import JSONResponse
 from starlette.types import ASGIApp, Receive, Scope, Send
 
-from app.common.config import settings
+from app.common.settings import conf
 from app.errors import exceptions as ex
 
 from app.utils.date_utils import D
@@ -95,7 +95,7 @@ class AccessControl:
         """
         try:
             access_token = access_token.replace("Bearer ", "")
-            payload = jwt.decode(access_token, key=settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
+            payload = jwt.decode(access_token, key=conf().JWT_SECRET, algorithms=[conf().JWT_ALGORITHM])
         except ExpiredSignatureError:
             raise ex.TokenExpiredEx()
         except DecodeError:
