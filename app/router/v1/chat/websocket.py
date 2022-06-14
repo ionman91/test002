@@ -9,7 +9,6 @@ router = APIRouter()
 
 @router.websocket("/ws/{chat_id}/{sender}")
 async def websocket_endpoint(websocket: WebSocket, chat_id: int, sender: str):
-    print(chatManager.get_members('20220613170344987084'))
     # sender = websocket.cookies.get("X-Authorization")
     if sender:
         await chatManager.connect(websocket, chat_id)
