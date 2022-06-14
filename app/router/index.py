@@ -23,9 +23,6 @@ async def chat(request: Request):
 
 @router.get("/chat/detail/{chat_id}")
 async def chat_detail(chat_id: int, request: Request):
-    user_info = request.state.user
-    await rd.add_participant(chat_id, user_info['username'], user_info)
-
     return m.templates.TemplateResponse(
         'chat/detail.html', {"request": request}
     )

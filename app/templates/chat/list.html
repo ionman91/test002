@@ -65,7 +65,6 @@
                 if (room_name) {
                     name = { title: room_name };
                 }
-                console.log(name);
                 $.ajax({
                     async: true,
                     method: "POST",
@@ -115,8 +114,12 @@
             $(document).on("click", ".per-room .go_chat", function () {
                 const chat_id = $(this).closest(".per-room").data("id");
                 $.ajax({
-                    url: `/chat/detail/${chat_id}`,
+                    async: true,
                     method: "GET",
+                    url: `/api/chat/add_user/${chat_id}`,
+                    headers: {
+                        Authorization: getCookie("Authorization"),
+                    },
                     contentType: "application/json",
                     success: function () {
                         window.location.href = `/chat/detail/${chat_id}`;

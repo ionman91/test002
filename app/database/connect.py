@@ -4,12 +4,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-from redis import Redis
+# from redis import Redis
 
 import logging
 import aioredis
 import json
-import os
 
 
 logging.basicConfig(level=logging.INFO)
@@ -27,6 +26,7 @@ class RedisConfig:
         if env == 'local':
             url = kwargs.get("REDIS_URL")
             self._redis = aioredis.from_url(url)
+            print(self._redis.ping())
         elif env == 'prod':
             # host = kwargs.get('REDIS_HOST')
             # port = kwargs.get('REDIS_PORT')
@@ -51,6 +51,7 @@ class RedisConfig:
     async def get_value(self, key):
         value = await self._redis.get(key)
         await self._redis.close()
+        print('value=-==', value)
         if value:
             value = json.loads(value)
         return value
@@ -77,7 +78,8 @@ class RedisConfig:
         if chat_info:
             if username in chat_info['participants'].keys():
                 return False
-        print(username, user_info)
+        print('username은요===', username, user_info)
+        print('chatinfo는요===', chat_info)
         chat_info['participants'][username] = user_info
         chat_info = json.dumps(chat_info, ensure_ascii=False)
         await self.set_value(chat_id, chat_info)

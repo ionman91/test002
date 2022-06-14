@@ -37,7 +37,7 @@ async def get_rooms():
 """
 
 
-@router.post("/add_room", status_code=status.HTTP_201_CREATED, response_model=ChatInfoId)
+@router.post("/add_room", status_code=status.HTTP_201_CREATED)
 async def add_room(chat: ChatBoardBase, request: Request):
     chat_id = await make_chat_id()
     username = request.state.user['username']
@@ -53,6 +53,18 @@ async def add_room(chat: ChatBoardBase, request: Request):
     await rd.set_value(chat_id, chat_info)
 
     return {"chat_id": chat_id}
+
+
+"""
+    coding - 유저를 추가
+"""
+
+
+@router.get("/add_user/{chat_id}")
+async def add_user(chat_id: int, request: Request):
+    user_info = request.state.user
+    await rd.add_participant(chat_id, user_info['username'], user_info)
+    return True
 
 
 """
