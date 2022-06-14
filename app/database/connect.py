@@ -69,8 +69,6 @@ class Redis:
             return True
         return False
 
-
-
     # async def make_user_websocket(self, chat_id, user, websocket):
     #     chat_info = await self.get_value(chat_id)
     #     chat_info['participants'][user]['websocket'] = websocket

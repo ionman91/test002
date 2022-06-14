@@ -20,7 +20,7 @@ def create_app():
     c = conf()
     app = FastAPI()
     conf_dict = asdict(c)
-
+    print(conf_dict)
     # db 와 redis 설정
     db.init_app(app, **conf_dict)
     rd.init_redis(**conf_dict)
@@ -36,7 +36,7 @@ def create_app():
     app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
     # 미들웨어 정의
-    app.add_middleware(AccessControl, except_path_list=settings.EXCEPT_PATH_LIST, except_path_regex=settings.EXCEPT_PATH_REGEX)
+    app.add_middleware(AccessControl, except_path_list=c.EXCEPT_PATH_LIST, except_path_regex=c.EXCEPT_PATH_REGEX)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=conf().ALLOW_SITE,
@@ -44,7 +44,7 @@ def create_app():
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    app.add_middleware(TrustedHostMiddleware, allowed_hosts=conf().TRUSTED_HOSTS, except_path=["/health"])
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=c.TRUSTED_HOSTS, except_path=["/health"])
 
     return app
 

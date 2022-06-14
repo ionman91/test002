@@ -3,11 +3,7 @@ from pydantic import BaseSettings
 
 
 class DBConfig(BaseSettings):
-    DB_USERNAME: str
-    DB_PASSWORD: str
-    DB_HOST: str
-    DB_PORT: str
-    DB_NAME: str
+    DB_URL: str
 
     EXCEPT_PATH_LIST: list[str] = []
     EXCEPT_PATH_REGEX: str
@@ -17,8 +13,8 @@ class DBConfig(BaseSettings):
     JWT_SECRET: str
     JWT_ALGORITHM: str
 
-    REDIS_HOST: str
-    REDIS_PASSWORD: str
+    REDIS_URL: str
+    REDIS_PWD: str
 
     class Config:
         env_file = ".env"

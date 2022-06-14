@@ -16,24 +16,37 @@ class Config:
     """
     BASE_DIR: str = base_dir
 
+    DB_URL: str = settings.DB_URL
+    REDIS_URL: str = settings.REDIS_URL
+    REDIS_PWD: str = settings.REDIS_PWD
+
+    EXCEPT_PATH_LIST = settings.EXCEPT_PATH_LIST
+    EXCEPT_PATH_REGEX: str = settings.EXCEPT_PATH_REGEX
+    EXPIRES_COOKIE_TIME: int = settings.EXPIRES_COOKIE_TIME
+
+    JWT_SECRET: str = settings.JWT_SECRET
+    JWT_ALGORITHM: str = settings.JWT_ALGORITHM
+
 
 @dataclass
 class LocalConfig(Config):
-    REDIS_URL: str = "redis://localhost"
-    REDIS_PWD: str = "1234"
-
-    DB_URL: str = "mysql+pymysql://admin:1234@localhost:3306/dev?charset=utf8mb4"
-
     TRUSTED_HOSTS = ["*"]
     ALLOW_SITE = ["*"]
 
 
 @dataclass
 class ProdConfig(Config):
-    REDIS_URL: str = f"redis://{settings.REDIS_HOST}"
-    REDIS_PWD: str = settings.REDIS_PASSWORD
+    DB_URL: str = environ.get('DB_URL')
+    REDIS_URL: str = environ.get('REDIS_URL')
+    REDIS_PWD: str = environ.get('REDIS_PWD', "")
 
-    DB_URL: str = f"mysql+pymysql://admin:qweasdzx@test-rds.ctnwpgtfxzsl.ap-northeast-2.rds.amazonaws.com:3306/test?charset=utf8mb4"
+    EXCEPT_PATH_LIST = environ.get('EXCEPT_PATH_LIST')
+    EXCEPT_PATH_REGEX: str = environ.get('EXCEPT_PATH_REGEX')
+    EXPIRES_COOKIE_TIME: int = environ.get('EXPIRES_COOKIE_TIME')
+
+    JWT_SECRET: str = environ.get('JWT_SECRET')
+    JWT_ALGORITHM: str = environ.get('JWT_ALGORITHM')
+    DB_URL: str = environ.get('DB_URL')
 
     TRUSTED_HOSTS = ["*"]
     ALLOW_SITE = ["*"]
