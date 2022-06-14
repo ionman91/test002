@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>ChatApp</title>
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script
+            src="https://kit.fontawesome.com/0d8a74bdec.js"
+            crossorigin="anonymous"
+        ></script>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', path='/font.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', path='/base.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', path='/style.css') }}"
+        />
+    </head>
+    <body>
+        <div class="container">{% block body %} {% endblock body %}</div>
+        <script>
+            function setCookie(name, value, hours) {
+                cookies = name + "=" + value + ";";
+                if (hours) {
+                    let expire = new Date();
+                    expire.setTime(expire.getTime() + hours * 60 * 60 * 1000);
+                    cookies += " path=/; expires=" + expire.toUTCString() + ";";
+                }
+                document.cookie = cookies;
+            }
+            function getCookie(name) {
+                name = name + "=";
+                var cookieData = document.cookie;
+                var start = cookieData.indexOf(name);
+                var value = "";
+                if (start != -1) {
+                    start += name.length;
+                    var end = cookieData.indexOf(";", start);
+                    if (end == -1) end = cookieData.length;
+                    value = cookieData.substring(start, end);
+                }
+                return unescape(value);
+            }
+            function deleteCookie(name) {
+                document.cookie =
+                    name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+            }
+        </script>
+        {% block script %} {% endblock script %}
+    </body>
+</html>

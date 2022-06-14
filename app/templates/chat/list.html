@@ -1,0 +1,156 @@
+{% extends "base.html" %} {% block body %}
+<div class="chat">
+    <h1>Chat Rooms</h1>
+    <div class="chat_lists">
+        <div class="make_room_sect">
+            <input
+                type="text"
+                id="make_room_input"
+                placeholder="방 이름을 입력해주세요"
+            />
+            <div class="btn make_room_btn">방 만들기</div>
+        </div>
+        <div class="participants_box">
+            <div class="title">참가자 명단</div>
+            <ul class="member"></ul>
+        </div>
+        <div class="list_sct"></div>
+    </div>
+    {% endblock body %} {% block script %}
+    <script>
+        $(document).ready(function () {
+            const list_sct = $(".list_sct");
+            const list_map = new Map();
+
+            $.ajax({
+                async: true,
+                method: "GET",
+                url: "/api/chat/get_rooms",
+                headers: {
+                    Authorization: getCookie("Authorization"),
+                },
+                contentType: "application/json",
+                success: function (datas) {
+                    if (datas) {
+                        let keys = Object.keys(datas);
+                        keys.forEach(function (key, index) {
+                            const data = datas[key];
+                            console.log(data);
+                            list_sct.append(list_html(key, data));
+                            // map 에 정보들을 저장해놓는다.
+                            list_map.set(key, [
+                                data["participants"],
+                                data["made_by"],
+                            ]);
+                        });
+                    } else {
+                        list_sct.append(`<div class="noRoom">방 없음</div>`);
+                    }
+                },
+                error: function (request, status, error) {
+                    alert(
+                        "code : " +
+                            request.status +
+                            "\r\nmessage : " +
+                            request.responseText +
+                            "\r\nerror : " +
+                            error
+                    );
+                },
+            });
+            // 버튼 이벤트
+            $(".make_room_btn").on("click", function () {
+                let name = "";
+                const room_name = $("#make_room_input").val();
+                if (room_name) {
+                    name = { title: room_name };
+                }
+
+                $.ajax({
+                    async: true,
+                    method: "POST",
+                    url: "/api/chat/add_room",
+                    headers: {
+                        Authorization: getCookie("Authorization"),
+                    },
+                    data: JSON.stringify(name),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (chat_id) {
+                        window.location.href = `/chat/detail/${chat_id}`;
+                    },
+                    error: function (request, status, error) {
+                        alert(
+                            "code : " +
+                                request.status +
+                                "\r\nmessage : " +
+                                request.responseText +
+                                "\r\nerror : " +
+                                error
+                        );
+                    },
+                });
+            });
+            $(document).on("click", ".per-room .participants", function () {
+                const chat_id = $(this).closest(".per-room").data("id");
+                const participants_sct = $(".participants_box .member");
+                const chat_info = list_map.get(chat_id);
+                const members = chat_info[0];
+                const made_by = chat_info[1];
+
+                for (username in members) {
+                    participants_sct.empty();
+                    if (username === made_by["username"]) {
+                        participants_sct.append(
+                            `<li><span>${username}</span><span class="made_by">방장</span></li>`
+                        );
+                    } else {
+                        participants_sct.append(
+                            `<li><span>${username}</span></li>`
+                        );
+                    }
+                }
+            });
+            $(document).on("click", ".per-room .go_chat", function () {
+                const chat_id = $(this).closest(".per-room").data("id");
+                $.ajax({
+                    url: `/chat/detail/${chat_id}`,
+                    method: "GET",
+                    contentType: "application/json",
+                    success: function () {
+                        window.location.href = `/chat/detail/${chat_id}`;
+                    },
+                    error: function (request, status, error) {
+                        alert(
+                            "code : " +
+                                request.status +
+                                "\r\nmessage : " +
+                                request.responseText +
+                                "\r\nerror : " +
+                                error
+                        );
+                    },
+                });
+            });
+        });
+        function list_html(id, data) {
+            const members = Object.keys(data.participants);
+            const code = `
+            <div class="per-room" data-id="${id}">
+                <div class="box">
+                    <div class="top">
+                        <div class="title">${data.title}</div>
+                        <div class="user">${members.length} / 2</div>
+                    </div>
+                    <div class="btm">
+                        <div class="participants">참가자 보기</div>
+                        <div class="btn go_chat">입장</div>
+                    </div>
+                </div>
+            </div>
+        `;
+            return code;
+        }
+    </script>
+    {% endblock script %}
+</div>

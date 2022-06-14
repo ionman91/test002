@@ -1,0 +1,366 @@
+@charset "UTF-8";
+.container {
+  width: 100%;
+  height: 100%;
+  padding: 40px 30px;
+}
+
+h1 {
+  font-size: 25px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-bottom: 2px solid #33353c;
+}
+
+.btn {
+  width: 70px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.orange {
+  background-color: #ef6f07;
+  color: #fff;
+}
+
+.dark_blue {
+  background-color: #02493e;
+  color: #89c5d1;
+}
+
+input {
+  height: 35px;
+  width: 200px;
+  font-size: 15px;
+  padding-left: 10px;
+  border: 0 solid black;
+  box-sizing: border-box;
+  outline: none;
+  border-bottom: 1px solid #aaa;
+}
+
+input#registerPw,
+input#loginPw {
+  -webkit-text-security: disc;
+}
+
+.disappear {
+  display: none;
+}
+
+.exitBtn {
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+  transform: rotate(-45deg);
+}
+
+.main ul {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 200px;
+  transform: translate(-50%, -50%);
+}
+.main ul li {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.main ul li a {
+  color: inherit;
+}
+.main ul li.loginING {
+  position: relative;
+  margin-bottom: 20px;
+}
+.main ul li.loginING > div {
+  text-align: center;
+}
+.main ul li.loginING > div img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #02493e;
+}
+.main ul li.loginING > div .usernameVal {
+  margin-top: 5px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #02493e;
+}
+.main ul li.loginING > div.exitBtn {
+  position: absolute;
+  right: 5px;
+  top: -15px;
+  font-size: 30px;
+  font-weight: bold;
+}
+.main ul li.loginSct,
+.main ul li.registerSct {
+  margin-top: 20px;
+  position: relative;
+}
+.main ul li.loginSct .exitBtn,
+.main ul li.registerSct .exitBtn {
+  position: absolute;
+  right: 5px;
+  top: -15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.main ul li.loginSct input,
+.main ul li.registerSct input {
+  margin-bottom: 10px;
+}
+.main ul li.loginSct .btn,
+.main ul li.registerSct .btn {
+  width: 100%;
+}
+
+/*
+
+    chat_input_user section
+
+*/
+.chat_input_user .inputSect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.chat_input_user .inputSect * {
+  display: inline-block;
+}
+.chat_input_user .inputSect .inputUserBtn {
+  margin-left: 10px;
+}
+
+/*
+
+    chat_lists section
+
+*/
+.chat_lists {
+  width: 100%;
+  padding: 20px;
+  display: inline-block;
+}
+.chat_lists .make_room_sect {
+  margin-bottom: 15px;
+}
+.chat_lists .make_room_sect * {
+  display: inline-block;
+}
+.chat_lists .make_room_sect .btn {
+  margin-left: 10px;
+  background-color: #33353c;
+  width: 80px;
+  color: #fff;
+  border-radius: 15px;
+}
+.chat_lists .participants_box {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 2px solid #02493e;
+  margin-bottom: 15px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #02493e;
+}
+.chat_lists .participants_box ul li {
+  margin-top: 5px;
+  font-weight: bold;
+  font-size: 15px;
+  display: inline-block;
+  margin-right: 5px;
+}
+.chat_lists .participants_box ul li .made_by {
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 10px;
+  background-color: #ef6f07;
+  color: #fff;
+  margin-left: 5px;
+}
+.chat_lists .list_sct .noRoom {
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 100px;
+}
+.chat_lists .list_sct .per-room {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.chat_lists .list_sct .per-room .box {
+  box-sizing: border-box;
+  width: 200px;
+  height: 110px;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: #02493e;
+  color: #89c5d1;
+}
+.chat_lists .list_sct .per-room .box .top {
+  position: relative;
+  height: 62%;
+  font-size: 14px;
+}
+.chat_lists .list_sct .per-room .box .top .title {
+  height: 40px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  /* 한 줄 자르기 */
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* 여러 줄 자르기 추가 스타일 */
+  white-space: normal;
+  line-height: 1.3;
+  text-align: left;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.chat_lists .list_sct .per-room .box .top .user {
+  height: 30%;
+  text-align: right;
+  margin-right: 10px;
+}
+.chat_lists .list_sct .per-room .box .btm {
+  position: relative;
+  width: 100%;
+  height: 38%;
+}
+.chat_lists .list_sct .per-room .box .btm .participants {
+  position: absolute;
+  font-size: 12px;
+  bottom: 5px;
+  left: 5px;
+  cursor: pointer;
+}
+.chat_lists .list_sct .per-room .box .btm .btn {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 12px;
+  height: 30px;
+  width: 50px;
+  color: #fff;
+  background-color: #137f86;
+}
+
+/*
+
+    chat_detail section
+
+*/
+.chat_detail .chat_info div {
+  position: relative;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #33353c;
+}
+.chat_detail .chat_info div > span:last-child::before {
+  content: "";
+  position: absolute;
+  height: 10px;
+  width: 1px;
+  left: 89px;
+  top: 5px;
+  background-color: #33353c;
+}
+.chat_detail .chat_info div span {
+  padding-left: 10px;
+}
+.chat_detail .chat_participant_sect {
+  margin-top: 15px;
+}
+.chat_detail .chat_participant_sect .box {
+  height: 71px;
+  width: 80%;
+  border: 1px solid #ddd;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+.chat_detail .chat_participant_sect .box ul li {
+  width: 48%;
+  font-size: 15px;
+  display: inline-block;
+  margin-top: 10px;
+}
+.chat_detail .chat_participant_sect .box ul li .made_by {
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 10px;
+  background-color: #ef6f07;
+  color: #fff;
+  margin-left: 5px;
+}
+.chat_detail .chat_input_sect {
+  margin-top: 15px;
+}
+.chat_detail .chat_input_sect .box {
+  width: 100%;
+  text-align: center;
+}
+.chat_detail .chat_input_sect .box > * {
+  display: inline-block;
+}
+.chat_detail .chat_input_sect .box input {
+  width: 400px;
+}
+.chat_detail .chat_input_sect .box .btn {
+  margin-left: 10px;
+  background-color: #02493e;
+  color: #89c5d1;
+}
+.chat_detail .chat_detail_sect {
+  margin-top: 20px;
+}
+.chat_detail .chat_detail_sect .box {
+  width: 90%;
+  height: 100%;
+}
+.chat_detail .chat_detail_sect .box #chatting .wrap {
+  display: flex;
+  width: 100%;
+}
+.chat_detail .chat_detail_sect .box #chatting .wrap .chat {
+  width: 200px;
+  height: auto;
+}
+.chat_detail .chat_detail_sect .box #chatting .wrap .chat .user {
+  font-weight: bold;
+  font-size: 14px;
+}
+.chat_detail .chat_detail_sect .box #chatting .wrap .chat .msg {
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  min-height: 80px;
+  margin-top: 5px;
+  padding: 5px 8px;
+}
+.chat_detail .chat_detail_sect .box #chatting .wrap .chat.welcome {
+  width: initial;
+}
+.chat_detail .chat_detail_sect .box #chatting .wrap .myMsg .user {
+  color: blue;
+}
+.chat_detail .chat_detail_sect .box #chatting .wrap .otherMsg .user {
+  color: red;
+}
+
+/*# sourceMappingURL=style.css.map */

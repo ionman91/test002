@@ -1,0 +1,45 @@
+name: docker-deploy
+
+on: [push]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+
+            - name: Set up Python 3.10
+              uses: actions/setup-python@v1
+              with:
+                  python-version: "3.10"
+
+            # 배포를 하기 위한 zip 파일 생성
+            - name: Generate deployment package
+              run: zip -r deploy.zip .
+
+            - name: Get timestamp
+              uses: gerred/actions/current-time@master
+              id: current-time
+
+            - name: Run string replace
+              uses: frabert/replace-string-action@master
+              id: format-time
+              with:
+                  pattern: '[:\.]+'
+                  string: "${{ steps.current-time.outputs.time }}"
+                  replace-with: "-"
+                  flags: "g"
+
+            - name: Beanstalk Deploy for app
+              uses: einaregilsson/beanstalk-deploy@v16
+              with:
+                  aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  application_name: jjoontopia-api
+                  environment_name: jjoontopia-prd-api
+                  region: ${{ secrets.AWS_REGION }}
+                  version_label: "my-${{ steps.format-time.outputs.replaced }}"
+                  deployment_package: deploy.zip
+
+            - name: Deployed!
+              run: echo App deployed to ELB

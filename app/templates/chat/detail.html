@@ -1,0 +1,116 @@
+{% extends "base.html" %} {% block body %}
+<div class="chat_detail">
+    <div class="chat_info"></div>
+    <div class="chat_participant_sect">
+        <div class="box">
+            <ul class="user_info"></ul>
+        </div>
+    </div>
+    <div class="chat_input_sect">
+        <div class="box">
+            <input
+                type="text"
+                id="input_chat"
+                placeholder="채팅을 입력해주세요"
+            />
+            <div class="btn input_chatting">입력</div>
+        </div>
+    </div>
+    <div class="chat_detail_sect">
+        <div class="box">
+            <div id="chatting"></div>
+        </div>
+    </div>
+</div>
+{% endblock body %} {% block script %}
+<script>
+    $(document).ready(function () {});
+    const current_user = getCookie("username");
+    const url = $(location).attr("href");
+    const chat_id = url.split("/").pop();
+    access_token = getCookie("Authorization");
+
+    $.ajax({
+        async: true,
+        method: "GET",
+        url: "/api/chat/get_chat_info/" + chat_id,
+        headers: {
+            Authorization: access_token,
+        },
+        contentType: "application/json",
+        success: function (info) {
+            $(".chat_info").append(`
+                <h1>${info.title}</h1>
+                <div>
+                    <span>개설자 : ${info.made_by.username}</span>
+                    <span>개설일 : ${info.created_at}</span>
+                </div>
+            `);
+            for (username in info.participants) {
+                if (current_user === username) {
+                    $(".chat_participant_sect .user_info").append(`
+                        <li><span>${username}</span><span class="made_by">본인</span></li>
+                    `);
+                } else {
+                    $(".chat_participant_sect .user_info").append(`
+                        <li><span>${username}</span></li>
+                    `);
+                }
+            }
+        },
+        error: function (request, status, error) {
+            alert(
+                "code : " +
+                    request.status +
+                    "\r\nmessage : " +
+                    request.responseText +
+                    "\r\nerror : " +
+                    error
+            );
+        },
+    });
+    const ws = new WebSocket(
+        `ws://127.0.0.1:8000/ws/${chat_id}/${current_user}?token=${access_token}`
+    );
+    ws.onmessage = function (event) {
+        const parent = $("#chatting");
+        const data = JSON.parse(event.data);
+
+        html = "";
+        if (data.status === "first") {
+            html = `<div class="chat welcome">${data.sender} 님이 입장하셨습니다.</div>`;
+        } else if (current_user === data.sender) {
+            html = `
+                <div class="chat myMsg" style="margin-left: auto;">
+                    <div class="user">${data.sender}</div>
+                    <div class="msg">${data.message}</div>
+                </div>
+            `;
+        } else {
+            html = `
+                <div class="chat otherMsg" style="margin-right:auto;">
+                    <div class="user">${data.sender}</div>
+                    <div class="msg">${data.message}</div>
+                </div>
+            `;
+        }
+        $("#chatting").append(html);
+    };
+    $(".input_chatting").on("click", function () {
+        const msg = $("#input_chat").val();
+        if (msg) {
+            data = {
+                sender: current_user,
+                message: msg,
+            };
+            ws.send(JSON.stringify(data));
+            $("#input_chat").val("");
+        }
+    });
+    var checkUnload = true;
+    jQuery(window).on("beforeunload", function (e) {
+        e.preventDefault();
+        if (checkUnload) return `뭐지????.`;
+    });
+</script>
+{% endblock script %}

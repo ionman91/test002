@@ -1,0 +1,179 @@
+{% extends "base.html" %} {% block body %}
+<div class="main">
+    <h1>환영 합니다.</h1>
+    <ul>
+        <li class="loginING disappear">
+            <div class="logout exitBtn">+</div>
+            <div>
+                <img
+                    src="https://www.bbangyanews.com/news/photo/202203/8970_14849_050.jpg"
+                />
+                <div class="usernameVal"></div>
+            </div>
+        </li>
+        <li class="btn loginBtn dark_blue">로그인</li>
+        <li class="loginSct disappear">
+            <div class="exitBtn">+</div>
+            <input
+                id="loginId"
+                placeholder="id 를 입력해주세요"
+                autocomplete="off"
+            />
+            <input
+                id="loginPw"
+                placeholder="비밀번호를 입력해주세요"
+                autocomplete="off"
+            />
+            <div class="btn orange" id="loginCallBack">로그인</div>
+        </li>
+        <li class="btn registerBtn dark_blue">회원가입</li>
+        <li class="registerSct disappear">
+            <div class="exitBtn">+</div>
+            <input
+                id="registerId"
+                placeholder="id 를 입력해주세요"
+                autocomplete="off"
+            />
+            <input
+                id="registerPw"
+                placeholder="비밀번호를 입력해주세요"
+                autocomplete="off"
+            />
+            <div class="btn orange" id="registerCallBack">가입하기</div>
+        </li>
+        <li class="btn chatSct dark_blue">채팅하기</li>
+    </ul>
+</div>
+{% endblock body %}{% block script %}
+<script>
+    function removeVal() {
+        $(".main input").val("");
+    }
+    function removeLi() {
+        $(".main li").addClass("disappear");
+    }
+    function initLi() {
+        removeLi();
+        removeVal();
+        $(".main li.btn").removeClass("disappear");
+    }
+
+    function showUserProfile(username) {
+        $(".loginBtn").addClass("disappear");
+        $(".loginSct").addClass("disappear");
+        $(".registerBtn").addClass("disappear");
+        $(".registerSct").addClass("disappear");
+        $(".chatSct").removeClass("disappear");
+
+        $(".loginING").removeClass("disappear");
+        $(".usernameVal").html(username + "님 ㅎㅇ");
+    }
+    function callbackFunc(action, json_data) {
+        $.ajax({
+            async: true,
+            url: "/api/auth/" + action + "/email",
+            method: "POST",
+            data: JSON.stringify(json_data),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (data) {
+                setCookie("Authorization", data.Authorization);
+                setCookie("username", json_data["username"], 24);
+
+                showUserProfile(json_data["username"]);
+            },
+            error: function (request, status, error) {
+                alert(
+                    "code : " +
+                        request.status +
+                        "\r\nmessage : " +
+                        request.responseText +
+                        "\r\nerror : " +
+                        error
+                );
+            },
+        });
+    }
+    function checkUser() {
+        return getCookie("username");
+    }
+    $(document).ready(function () {
+        const loginBtn = $(".loginBtn");
+        const loginSct = $(".loginSct");
+        const registerBtn = $(".registerBtn");
+        const registerSct = $(".registerSct");
+        const chatSct = $(".chatSct");
+
+        const currentUser = checkUser();
+
+        if (currentUser) {
+            showUserProfile(currentUser);
+        }
+
+        loginBtn.click(function () {
+            removeLi();
+            loginSct.removeClass("disappear");
+        });
+        registerBtn.click(function () {
+            removeLi();
+            registerSct.removeClass("disappear");
+        });
+
+        $(".main .registerSct .exitBtn").click(function () {
+            initLi();
+        });
+
+        $(".main .loginSct .exitBtn").click(function () {
+            initLi();
+        });
+
+        $(".main .loginING .exitBtn").click(function () {
+            deleteCookie("Authorization");
+            deleteCookie("username");
+            initLi();
+        });
+
+        $(".main .chatSct").click(function () {
+            $.ajax({
+                url: "/chat/list",
+                method: "GET",
+                contentType: "application/json",
+                success: function () {
+                    window.location.href = "/chat/list";
+                },
+                error: function (request, status, error) {
+                    alert(
+                        "code : " +
+                            request.status +
+                            "\r\nmessage : " +
+                            request.responseText +
+                            "\r\nerror : " +
+                            error
+                    );
+                },
+            });
+        });
+
+        $("#loginCallBack").click(function () {
+            const id = $("#loginId").val();
+            const pw = $("#loginPw").val();
+            if (id && pw) {
+                user = { username: id, password: pw };
+                callbackFunc("login", user);
+            } else {
+                return;
+            }
+        });
+        $("#registerCallBack").click(function () {
+            const id = $("#registerId").val();
+            const pw = $("#registerPw").val();
+            if (id && pw) {
+                user = { username: id, password: pw };
+                callbackFunc("register", user);
+            } else {
+                return;
+            }
+        });
+    });
+</script>
+{% endblock script %}
