@@ -59,7 +59,7 @@ async def is_username_exist(username: str):
     return False
 
 
-def create_access_token(*, data: dict = None, expires_delta: int = conf().EXPIRES_COOKIE_TIME):
+def create_access_token(*, data: dict = None, expires_delta: int = int(conf().EXPIRES_COOKIE_TIME)):
     to_encode = data.copy()
     if expires_delta:
         to_encode.update({"exp": datetime.utcnow() + timedelta(hours=expires_delta)})
