@@ -18,7 +18,6 @@ class Config:
 
     DB_URL: str = settings.DB_URL
     REDIS_URL: str = settings.REDIS_URL
-    REDIS_PWD: str = settings.REDIS_PWD
 
     EXCEPT_PATH_LIST = settings.EXCEPT_PATH_LIST
     EXCEPT_PATH_REGEX: str = settings.EXCEPT_PATH_REGEX
@@ -38,7 +37,6 @@ class LocalConfig(Config):
 class ProdConfig(Config):
     DB_URL: str = environ.get('DB_URL')
     REDIS_URL: str = environ.get('REDIS_URL')
-    REDIS_PWD: str = environ.get('REDIS_PWD', "")
 
     EXCEPT_PATH_LIST = environ.get('EXCEPT_PATH_LIST')
     EXCEPT_PATH_REGEX: str = environ.get('EXCEPT_PATH_REGEX')

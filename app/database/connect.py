@@ -17,9 +17,8 @@ class Redis:
 
     def init_redis(self, **kwargs):
         url = kwargs.get("REDIS_URL")
-        pwd = kwargs.get("REDIS_PWD")
 
-        self._redis = aioredis.from_url(url, password=pwd)
+        self._redis = aioredis.from_url(url)
 
     async def set_value(self, key, value):
         await self._redis.set(key, value)

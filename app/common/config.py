@@ -14,7 +14,6 @@ class DBConfig(BaseSettings):
     JWT_ALGORITHM: str
 
     REDIS_URL: str
-    REDIS_PWD: str
 
     class Config:
         env_file = ".env"
