@@ -7,7 +7,7 @@ COPY requirements.txt ./
 RUN apt update > /dev/null && \
         apt install -y build-essential && \
         pip install --upgrade pip \
-        pip install --disable-pip-version-check -r requirement.txt
+        pip install --disable-pip-version-check -r requirements.txt
 
 # Final image
 FROM base
