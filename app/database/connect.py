@@ -33,7 +33,8 @@ class RedisConfig:
             logging.info(host, port, user)
             self._redis = Redis(host=host, port=port, decode_responses=True, ssl=True, username=user)
             logging.info(self._redis)
-        if self._redis.ping():
+            logging.info(self._redis.ping())
+        if self._redis and self._redis.ping():
             logging.info("Connected to Redis")
 
     async def set_value(self, key, value):
@@ -71,9 +72,8 @@ class RedisConfig:
 
     async def add_participant(self, chat_id, username, user_info):
         chat_info = await self.get_value(chat_id)
-        if chat_info:
-            if username in chat_info['participants'].keys():
-                return False
+        if chat_info and username in chat_info['participants'].keys():
+            return False
         print(username, user_info)
         chat_info['participants'][username] = user_info
         chat_info = json.dumps(chat_info, ensure_ascii=False)
@@ -81,9 +81,8 @@ class RedisConfig:
 
     async def is_check_user(self, chat_id, username):
         chat_info = await self.get_value(chat_id)
-        if chat_info:
-            if username in chat_info['participants'].keys():
-                return True
+        if chat_info and username in chat_info['participants'].keys():
+            return True
         return False
 
     # async def make_user_websocket(self, chat_id, user, websocket):
