@@ -9,6 +9,7 @@ from redis import Redis
 import logging
 import aioredis
 import json
+import os
 
 
 logging.basicConfig(level=logging.INFO)
@@ -27,11 +28,13 @@ class RedisConfig:
             url = kwargs.get("REDIS_URL")
             self._redis = aioredis.from_url(url)
         elif env == 'prod':
-            host = kwargs.get('REDIS_HOST')
-            port = kwargs.get('REDIS_PORT')
-            user = kwargs.get('REDIS_USER')
-
-            self._redis = Redis(host=host, port=port, decode_responses=True, ssl=True, username=user)
+            # host = kwargs.get('REDIS_HOST')
+            # port = kwargs.get('REDIS_PORT')
+            # user = kwargs.get('REDIS_USER')
+            self._redis = aioredis.from_url(
+                "redis://jjoontopia-redis.5m2cdo.ng.0001.apn2.cache.amazonaws.com:6379"
+            )
+            # self._redis = Redis(host=host, port=port, decode_responses=True, ssl=True, username=user)
             logging.info(self._redis)
         if self._redis and self._redis.ping():
             logging.info("Connected to Redis")
