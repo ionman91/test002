@@ -1,6 +1,5 @@
 venv/
 .env
-app/static/style.css.map
 app/static/style.scss
 question.txt
 __pycache__

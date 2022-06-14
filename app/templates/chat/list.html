@@ -65,7 +65,7 @@
                 if (room_name) {
                     name = { title: room_name };
                 }
-
+                console.log(name);
                 $.ajax({
                     async: true,
                     method: "POST",
@@ -76,8 +76,9 @@
                     data: JSON.stringify(name),
                     dataType: "json",
                     contentType: "application/json",
-                    success: function (chat_id) {
-                        window.location.href = `/chat/detail/${chat_id}`;
+                    success: function (data) {
+                        console.log(data.chat_id);
+                        window.location.href = `/chat/detail/${data.chat_id}`;
                     },
                     error: function (request, status, error) {
                         alert(

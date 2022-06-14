@@ -52,4 +52,4 @@ class ProdConfig(Config):
 
 def conf():
     config = dict(prod=ProdConfig(), local=LocalConfig())
-    return config.get(environ.get("API_ENV", "prod"))
+    return config.get(environ.get("API_ENV", "local"))
