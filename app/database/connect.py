@@ -30,6 +30,7 @@ class RedisConfig:
             host = kwargs.get('REDIS_HOST')
             port = kwargs.get('REDIS_PORT')
             user = kwargs.get('REDIS_USER')
+
             self._redis = Redis(host=host, port=port, decode_responses=True, ssl=True, username=user)
             logging.info(self._redis)
             logging.info(self._redis.ping())
