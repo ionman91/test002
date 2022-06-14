@@ -22,6 +22,7 @@ class RedisConfig:
 
     def init_redis(self, **kwargs):
         env = kwargs.get('API_ENV')
+        logging.info(env)
         if env == 'local':
             url = kwargs.get("REDIS_URL")
             self._redis = aioredis.from_url(url)
