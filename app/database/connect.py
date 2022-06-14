@@ -22,7 +22,7 @@ class RedisConfig:
 
     def init_redis(self, **kwargs):
         env = kwargs.get('API_ENV')
-        logging.info(env)
+
         if env == 'local':
             url = kwargs.get("REDIS_URL")
             self._redis = aioredis.from_url(url)
@@ -30,8 +30,9 @@ class RedisConfig:
             host = kwargs.get('REDIS_HOST')
             port = kwargs.get('REDIS_PORT')
             user = kwargs.get('REDIS_USER')
+            logging.info(host, port, user)
             self._redis = Redis(host=host, port=port, decode_responses=True, ssl=True, username=user)
-
+            logging.info(self._redis)
         if self._redis.ping():
             logging.info("Connected to Redis")
 
