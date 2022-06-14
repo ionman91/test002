@@ -23,19 +23,19 @@ class RedisConfig:
     def init_redis(self, **kwargs):
         env = kwargs.get('API_ENV')
 
-        if env == 'local':
-            url = kwargs.get("REDIS_URL")
-            self._redis = aioredis.from_url(url)
-        elif env == 'prod':
-            host = kwargs.get('REDIS_HOST')
-            port = kwargs.get('REDIS_PORT')
-            user = kwargs.get('REDIS_USER')
+        # if env == 'local':
+        url = kwargs.get("REDIS_URL")
+        self._redis = aioredis.from_url('redis://localhost')
+        # elif env == 'prod':
+        #     host = kwargs.get('REDIS_HOST')
+        #     port = kwargs.get('REDIS_PORT')
+        #     user = kwargs.get('REDIS_USER')
 
-            self._redis = Redis(host=host, port=port, decode_responses=True, ssl=True, username=user)
-            logging.info(self._redis)
-            logging.info(self._redis.ping())
-        if self._redis and self._redis.ping():
-            logging.info("Connected to Redis")
+        #     self._redis = Redis(host=host, port=port, decode_responses=True, ssl=True, username=user)
+        #     logging.info(self._redis)
+        #     logging.info(self._redis.ping())
+        # if self._redis and self._redis.ping():
+        #     logging.info("Connected to Redis")
 
     async def set_value(self, key, value):
         await self._redis.set(key, value)
