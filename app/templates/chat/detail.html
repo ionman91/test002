@@ -39,7 +39,6 @@
         contentType: "application/json",
         async: false,
         success: function (info) {
-            console.log(info);
             $(".chat_info").append(`
                 <h1>${info.title}</h1>
                 <div>
@@ -76,22 +75,23 @@
     ws.onmessage = function (event) {
         const parent = $("#chatting");
         const data = JSON.parse(event.data);
-
         html = "";
         if (data.status === "first") {
-            html = `<div class="chat welcome">${data.sender} 님이 입장하셨습니다.</div>`;
+            html = `<div class="chat globalMsg" style="width:100%; text-align:center;"><b>${data.sender}</b> 님이 입장하셨습니다.</div>`;
+        } else if (data.status === "last") {
+            html = `<div class="chat globalMsg" style="width:100%; text-align:center;"><b>${data.sender}</b> 님이 퇴장하셨습니다.</div>`;
         } else if (current_user === data.sender) {
             html = `
-                <div class="chat myMsg" style="margin-left: auto;">
-                    <div class="user">${data.sender}</div>
-                    <div class="msg">${data.message}</div>
+                <div class="chat" id="myMsg" style="width:200px; margin-left:auto; height:auto; margin-top:8px; margin-bottom:8px; font-size:14px;">
+                    <div class="user" style="font-weight:bold; color:blue;">${data.sender}</div>
+                    <div class="msg" style="border:1px solid #aaa; border-radius:8px; min-height:20px; margin-top:5px; padding:5px 8px;">${data.message}</div>
                 </div>
             `;
         } else {
             html = `
-                <div class="chat otherMsg" style="margin-right:auto;">
-                    <div class="user">${data.sender}</div>
-                    <div class="msg">${data.message}</div>
+                <div class="chat" id="otherMsg" style="width:200px; margin-right:auto; height:auto; margin-top:8px; margin-bottom:8px; font-size:14px;">
+                    <div class="user" style="font-weight:bold; color:color;">${data.sender}</div>
+                    <div class="msg" style="border:1px solid #aaa; border-radius:8px; min-height:20px; margin-top:5px; padding:5px 8px;">${data.message}</div>
                 </div>
             `;
         }
@@ -109,9 +109,12 @@
         }
     });
     var checkUnload = true;
-    jQuery(window).on("beforeunload", function (e) {
-        e.preventDefault();
-        if (checkUnload) return `뭐지????.`;
+    window.addEventListener("beforeunload", (event) => {
+        // 명세에 따라 preventDefault는 호출해야하며, 기본 동작을 방지합니다.
+        event.preventDefault();
+
+        // 대표적으로 Chrome에서는 returnValue 설정이 필요합니다.
+        event.returnValue = "";
     });
 </script>
 {% endblock script %}

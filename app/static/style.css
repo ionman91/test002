@@ -333,33 +333,39 @@ input#loginPw {
 .chat_detail .chat_detail_sect .box {
   width: 90%;
   height: 100%;
+  margin: 0 auto;
 }
-.chat_detail .chat_detail_sect .box #chatting .wrap {
-  display: flex;
-  width: 100%;
-}
-.chat_detail .chat_detail_sect .box #chatting .wrap .chat {
+.chat_detail .chat_detail_sect .box #chatting .chat {
   width: 200px;
   height: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
-.chat_detail .chat_detail_sect .box #chatting .wrap .chat .user {
+.chat_detail .chat_detail_sect .box #chatting .chat .user {
   font-weight: bold;
   font-size: 14px;
 }
-.chat_detail .chat_detail_sect .box #chatting .wrap .chat .msg {
+.chat_detail .chat_detail_sect .box #chatting .chat .msg {
   border: 1px solid #aaa;
   border-radius: 8px;
-  min-height: 80px;
+  min-height: 20px;
   margin-top: 5px;
   padding: 5px 8px;
 }
-.chat_detail .chat_detail_sect .box #chatting .wrap .chat.welcome {
-  width: initial;
+.chat_detail .chat_detail_sect .box #chatting #globalMsg {
+  width: 100%;
+  text-align: center;
 }
-.chat_detail .chat_detail_sect .box #chatting .wrap .myMsg .user {
+.chat_detail .chat_detail_sect .box #chatting #myMsg {
+  margin-left: auto;
+}
+.chat_detail .chat_detail_sect .box #chatting #myMsg .user {
   color: blue;
 }
-.chat_detail .chat_detail_sect .box #chatting .wrap .otherMsg .user {
+.chat_detail .chat_detail_sect .box #chatting #otherMsg {
+  margin-right: auto;
+}
+.chat_detail .chat_detail_sect .box #chatting #otherMsg .user {
   color: red;
 }
 

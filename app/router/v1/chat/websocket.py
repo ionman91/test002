@@ -25,8 +25,8 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, sender: str):
                 # d["room_name"] = room_name
 
                 # room_members = (
-                #     chatManager.get_members(room_name)
-                #     if chatManager.get_members(room_name) is not None
+                #     chatManager.get_members(chat_id)
+                #     if chatManager.get_members(chat_id) is not None
                 #     else []
                 # )
                 # if websocket not in room_members:
@@ -35,3 +35,8 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, sender: str):
                 await chatManager.broadcast(data, chat_id)
         except WebSocketDisconnect:
             chatManager.remove(websocket, chat_id)
+            welcome_msg = {
+                "status": "last",
+                "sender": sender,
+            }
+            await chatManager.broadcast(welcome_msg, chat_id)
