@@ -78,10 +78,8 @@ class RedisConfig:
         if chat_info:
             if username in chat_info['participants'].keys():
                 return False
-        print('username은요===', username, user_info)
-        print('chatinfo는요===', chat_info)
         chat_info['participants'][username] = user_info
-        chat_info = json.dumps(chat_info, ensure_ascii=False)
+        chat_info = json.dumps(chat_info, ensure_ascii=False).encode('utf-8')
         await self.set_value(chat_id, chat_info)
 
     async def is_check_user(self, chat_id, username):

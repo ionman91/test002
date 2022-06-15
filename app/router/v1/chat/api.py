@@ -48,7 +48,7 @@ async def add_room(chat: ChatBoardBase, request: Request):
         'made_by': request.state.user
     }
     chat_info['participants'][username] = request.state.user
-    chat_info = json.dumps(chat_info, ensure_ascii=False)
+    chat_info = json.dumps(chat_info, ensure_ascii=False).encode('utf-8')
 
     await rd.set_value(chat_id, chat_info)
 
