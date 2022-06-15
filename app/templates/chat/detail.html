@@ -28,6 +28,7 @@
     const current_user = getCookie("username");
     const url = $(location).attr("href");
     const chat_id = url.split("/").pop();
+    const origin = $(location).attr("origin").split("//").pop();
     access_token = getCookie("Authorization");
 
     $.ajax({
@@ -39,6 +40,7 @@
         contentType: "application/json",
         async: false,
         success: function (info) {
+            console.log(info);
             $(".chat_info").append(`
                 <h1>${info.title}</h1>
                 <div>
@@ -70,7 +72,7 @@
         },
     });
     const ws = new WebSocket(
-        `ws://127.0.0.1:8000/ws/${chat_id}/${current_user}?token=${access_token}`
+        `ws://${origin}/ws/${chat_id}/${current_user}?token=${access_token}`
     );
     ws.onmessage = function (event) {
         const parent = $("#chatting");
