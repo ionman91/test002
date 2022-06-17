@@ -1,7 +1,8 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from app.lib.chat.chat import chatManager
-from app.database.connect import rd
+
+import logging
 
 
 router = APIRouter()
@@ -21,6 +22,7 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int, sender: str):
         try:
             while True:
                 data = await websocket.receive_json()
+                logging.info(f"현재 접속된 유저들은 === {chatManager.get_members(chat_id)}")
                 # d = json.loads(data)
                 # d["room_name"] = room_name
 

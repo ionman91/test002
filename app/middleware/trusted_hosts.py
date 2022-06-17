@@ -37,11 +37,8 @@ class TrustedHostMiddleware:
 
         headers = Headers(scope=scope)
         host = headers.get("host", "").split(":")[0]
-        print("Hello Trusted2")
         is_valid_host = False
         found_www_redirect = False
-        print("Hello Trusted3")
-        print('request.path.url===')
         for pattern in self.allowed_hosts:
             if (
                 host == pattern

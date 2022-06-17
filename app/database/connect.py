@@ -35,9 +35,6 @@ class RedisConfig:
                 "redis://jjoontopia-redis.5m2cdo.ng.0001.apn2.cache.amazonaws.com:6379"
             )
             # self._redis = Redis(host=host, port=port, decode_responses=True, ssl=True, username=user)
-            logging.info(self._redis)
-        if self._redis and self._redis.ping():
-            logging.info("Connected to Redis")
 
     async def set_value(self, key, value):
         await self._redis.set(key, value)
