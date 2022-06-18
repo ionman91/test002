@@ -42,6 +42,8 @@
             <div class="btn orange" id="registerCallBack">가입하기</div>
         </li>
         <li class="btn chatSct dark_blue">채팅하기</li>
+        <li class="btn classSct dark_blue">Class Test</li>
+        <div class="test_sct"></div>
     </ul>
 </div>
 {% endblock body %}{% block script %}
@@ -173,6 +175,27 @@
             } else {
                 return;
             }
+        });
+        $(".classSct").click(function () {
+            $.ajax({
+                async: true,
+                url: "/api/auth/class_test",
+                method: "POST",
+                contentType: "application/json",
+                success: function (data) {
+                    $(".test_sct").html(data.result);
+                },
+                error: function (request, status, error) {
+                    alert(
+                        "code : " +
+                            request.status +
+                            "\r\nmessage : " +
+                            request.responseText +
+                            "\r\nerror : " +
+                            error
+                    );
+                },
+            });
         });
     });
 </script>

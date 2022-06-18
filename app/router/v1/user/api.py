@@ -26,7 +26,6 @@ async def register(sns_type: SnsType, user: UserRegister, session: Session = Dep
             return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=dict(msg="존재하는 유저리야"))
         hash_pw = bcrypt.hashpw(user.password.encode("utf-8"), bcrypt.gensalt())
         new_user = User.create(session, auto_commit=True, password=hash_pw, username=user.username, sns_type=sns_type)
-        print('3')
         token = dict(Authorization=f"Bearer {create_access_token(data=UserToken.from_orm(new_user).dict(exclude={'password'}),)}")
         return token
     return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=dict(msg="NOT_SUPPORTED"))
@@ -40,7 +39,6 @@ async def login(sns_type: SnsType, user: UserRegister):
         if not user.username or not user.password:
             return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=dict(msg="Email and PW must be provided'"))
         if not is_exist:
-            print('없어')
             return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=dict(msg="NO_MATCH_USER"))
         exist_user = await is_username_exist(user.username)
         is_verified = bcrypt.checkpw(user.password.encode("utf-8"), exist_user.password.encode("utf-8"))
