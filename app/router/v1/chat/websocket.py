@@ -27,7 +27,13 @@ STOPWORD = "STOP"
 async def main(websocket: WebSocket, chat_id: str):
     await websocket.accept()
 
-    redis = await aioredis.from_url("redis://localhost", encoding="utf-8", decode_responses=True)
+    # redis = await aioredis.from_url("redis://localhost", encoding="utf-8", decode_responses=True)
+
+    redis = aioredis.from_url(
+        "redis://jjoontopia-redis.5m2cdo.ng.0001.apn2.cache.amazonaws.com:6379",
+        encoding="utf-8", decode_responses=True
+    )
+
     pubsub = redis.pubsub()
 
     consumer_task = publisher(redis, websocket, chat_id)
