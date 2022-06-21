@@ -27,11 +27,11 @@
         <script>
             function setCookie(name, value, hours) {
                 cookies = name + "=" + value + ";";
-                if (hours) {
-                    let expire = new Date();
-                    expire.setTime(expire.getTime() + hours * 60 * 60 * 1000);
-                    cookies += " path=/; expires=" + expire.toUTCString() + ";";
-                }
+                // if (hours) {
+                //     let expire = new Date();
+                //     expire.setTime(expire.getTime() + hours * 60 * 60 * 1000);
+                //     cookies += " path=/; expires=" + expire.toUTCString() + ";";
+                // }
                 document.cookie = cookies;
             }
             function getCookie(name) {

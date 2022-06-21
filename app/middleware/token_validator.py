@@ -32,6 +32,7 @@ class AccessControl:
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if (scope['type'] == 'websocket'):
             token = str(scope['query_string'])
+            print(token)
             access_token = re.split("(?:b'token=)|\'", str(token))[1].replace('%20', ' ')
             is_validator = await self.token_decode(access_token=str(access_token))
             if is_validator:
@@ -60,7 +61,7 @@ class AccessControl:
             else:
                 # 템플릿 렌더링인 경우 쿠키에서 토큰 검사
                 # request.cookies["Authorization"] = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoia29hbGFAZGluZ3JyLmNvbSIsIm5hbWUiOm51bGwsInBob25lX251bWJlciI6bnVsbCwicHJvZmlsZV9pbWciOm51bGwsInNuc190eXBlIjpudWxsfQ.4vgrFvxgH8odoXMvV70BBqyqXOFa2NDQtzYkGywhV48"
-
+                print(request.cookies.keys())
                 if "Authorization" not in request.cookies.keys():
                     response = JSONResponse(status_code=401, content=dict(msg="AUTHORIZATION_REQUIRED"))
                     return await response(scope, receive, send)
@@ -94,7 +95,9 @@ class AccessControl:
             access_token = access_token.replace("Bearer ", "")
             payload = jwt.decode(access_token, key=conf().JWT_SECRET, algorithms=[conf().JWT_ALGORITHM])
         except ExpiredSignatureError:
+            print('here????111111111111111111')
             raise ex.TokenExpiredEx()
         except DecodeError:
+            print('here????????222222222222222222222222222')
             raise ex.TokenDecodeEx()
         return payload

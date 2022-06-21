@@ -72,10 +72,14 @@
         },
     });
     const ws = new WebSocket(
-        `ws://${origin}/ws/${chat_id}/${current_user}?token=${access_token}`
+        `ws://${origin}/ws/${chat_id}?token=${access_token}`
     );
+    // const ws = new WebSocket(
+    //     `ws://${origin}/ws/${chat_id}?token=${access_token}`
+    // );
     ws.onmessage = function (event) {
         const parent = $("#chatting");
+        console.log(event);
         const data = JSON.parse(event.data);
         html = "";
         if (data.status === "first") {

@@ -24,6 +24,7 @@ class LocalConfig(Config):
 
     DB_URL: str = getenv('DB_URL')
     REDIS_URL: str = getenv('REDIS_URL')
+    RMQ_URL: str = getenv('RMQ_URL')
 
     EXCEPT_PATH_LIST = getenv('EXCEPT_PATH_LIST')
     EXCEPT_PATH_REGEX: str = getenv('EXCEPT_PATH_REGEX')
@@ -44,6 +45,7 @@ class ProdConfig(Config):
     REDIS_HOST: str = environ.get('REDIS_HOST')
     REDIS_PORT: str = environ.get('REDIS_PORT')
     REDIS_USER: str = environ.get('REDIS_USER')
+    RMQ_URL: str = environ.get('RMQ_URL')
 
     EXCEPT_PATH_LIST = environ.get('EXCEPT_PATH_LIST')
     EXCEPT_PATH_REGEX: str = environ.get('EXCEPT_PATH_REGEX')

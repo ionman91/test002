@@ -1,4 +1,5 @@
 venv/
+ztrash/
 .env
 app/static/style.scss
 question.txt

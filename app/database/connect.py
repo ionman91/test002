@@ -26,7 +26,6 @@ class RedisConfig:
         if env == 'local':
             url = kwargs.get("REDIS_URL")
             self._redis = aioredis.from_url(url)
-            print(self._redis.ping())
         elif env == 'prod':
             # host = kwargs.get('REDIS_HOST')
             # port = kwargs.get('REDIS_PORT')
