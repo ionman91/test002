@@ -49,14 +49,17 @@ async def add_room(chat_info: ChatBoardBase, request: Request, session: Session 
 
         return chat_room
     else:
-        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=dict(msg="존재하지 않는 유저야"))
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=dict(msg="존재하지 않는 유저입니다"))
 
 
 # /chat/detail - 채팅방의 정보를 얻는다
 @router.get("/api/chat/get_chat_info/{chat_id}", response_model=ChatBoardList)
 async def add_user(chat_id: int, session: Session = Depends(db.session)):
     chat_room = session.query(ChatBoard).filter(ChatBoard.id == chat_id).first()
-    return chat_room
+
+    if chat_room:
+        return chat_room
+    return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=dict(msg="존재하지 않는 채팅방입니다."))
 
 
 # /chat/detail - 멤버를 삭제한다.

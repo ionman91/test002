@@ -73,6 +73,7 @@
                     "\r\nerror : " +
                     error
             );
+            window.location = "/chat/list";
         },
     });
     function reload_participants() {
@@ -196,6 +197,7 @@
         $(window).off("beforeunload");
     }
     $(window).on("beforeunload", callback);
+
     $(".exitChatRoom").on("click", function () {
         if (confirm("정말 나가시겠습니까?")) {
             off();
@@ -210,6 +212,13 @@
                 async: false,
                 success: function (data) {
                     if (data.result === "success") {
+                        ws.send(
+                            JSON.stringify({
+                                status: "exit_user",
+                                sender: current_user,
+                                message: "",
+                            })
+                        );
                         window.location = "/chat/list";
                     }
                 },
