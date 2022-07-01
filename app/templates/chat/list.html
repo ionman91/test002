@@ -32,16 +32,17 @@
                 contentType: "application/json",
                 success: function (datas) {
                     if (datas) {
-                        let keys = Object.keys(datas);
-                        keys.forEach(function (key, index) {
-                            const data = datas[key];
-                            console.log(data);
-                            list_sct.append(list_html(key, data));
-                            // map 에 정보들을 저장해놓는다.
-                            list_map.set(key, [
-                                data["participants"],
-                                data["made_by"],
-                            ]);
+                        console.log(datas);
+                        datas.forEach(function (data) {
+                            const members = JSON.parse(data.participants);
+                            list_sct.append(
+                                list_html(
+                                    data.id,
+                                    data.title,
+                                    data.made_by_user.username,
+                                    members.length
+                                )
+                            );
                         });
                     } else {
                         list_sct.append(`<div class="noRoom">방 없음</div>`);
@@ -76,8 +77,7 @@
                     dataType: "json",
                     contentType: "application/json",
                     success: function (data) {
-                        console.log(data.chat_id);
-                        window.location.href = `/chat/detail/${data.chat_id}`;
+                        window.location.href = `/chat/detail/${data.id}`;
                     },
                     error: function (request, status, error) {
                         alert(
@@ -113,41 +113,19 @@
             });
             $(document).on("click", ".per-room .go_chat", function () {
                 const chat_id = $(this).closest(".per-room").data("id");
-                $.ajax({
-                    async: true,
-                    method: "GET",
-                    url: `/api/chat/add_user/${chat_id}`,
-                    headers: {
-                        Authorization: getCookie("Authorization"),
-                    },
-                    contentType: "application/json",
-                    success: function () {
-                        window.location.href = `/chat/detail/${chat_id}`;
-                    },
-                    error: function (request, status, error) {
-                        alert(
-                            "code : " +
-                                request.status +
-                                "\r\nmessage : " +
-                                request.responseText +
-                                "\r\nerror : " +
-                                error
-                        );
-                    },
-                });
+                window.location.href = `/chat/detail/${chat_id}`;
             });
         });
-        function list_html(id, data) {
-            const members = Object.keys(data.participants);
+        function list_html(id, title, made_by, members) {
             const code = `
             <div class="per-room" data-id="${id}">
                 <div class="box">
                     <div class="top">
-                        <div class="title">${data.title}</div>
-                        <div class="user">${members.length} / 2</div>
+                        <div class="title">${title}</div>
+                        <div class="user">${members} / 4</div>
                     </div>
                     <div class="btm">
-                        <div class="participants">참가자 보기</div>
+                        <div class="participants">개설자 : ${made_by}</div>
                         <div class="btn go_chat">입장</div>
                     </div>
                 </div>

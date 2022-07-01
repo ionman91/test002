@@ -1,7 +1,7 @@
 from sqlalchemy import (
     Column, ForeignKey, Integer, String, Boolean, Enum, func, DateTime
 )
-from sqlalchemy.orm import Session, relationship
+from sqlalchemy.orm import Session, relationship, backref
 from app.database.connect import Base, db
 
 
@@ -161,14 +161,15 @@ class User(Base, BaseMixin):
     password = Column(String(200), nullable=False)
     sns_type = Column(Enum("facebook", "google", "kakao", "email"), nullable=False)
     is_active = Column(Boolean, default=True)
-    chat_room_id = Column(Integer, ForeignKey('chat_board.id'))
 
-    chat_room = relationship("ChatBoard", back_populates="participants")
+    in_chat = relationship("ChatBoard", back_populates="made_by_user", uselist=False)
 
 
 class ChatBoard(Base, BaseMixin):
     __tablename__ = "chat_board"
 
-    title = Column(String(100), nullable=False)
+    title = Column(String(100))
+    made_by = Column(Integer, ForeignKey('user.id'))
+    participants = Column(String(100))
 
-    participants = relationship("User", back_populates="chat_room")
+    made_by_user = relationship("User", back_populates="in_chat")

@@ -3,4 +3,6 @@ ztrash/
 .env
 app/static/style.scss
 question.txt
-__pycache__
+__pycache__/
+__init__.cpython-310.pyc
+api.cpython-310.pyc

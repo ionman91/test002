@@ -5,7 +5,8 @@ from fastapi.staticfiles import StaticFiles
 from dataclasses import asdict
 from starlette.middleware.cors import CORSMiddleware
 
-from app.database.connect import db, rd
+from app.database.connect import db
+from app.lib.redis import rd
 from app.common.settings import conf
 from app.middleware.token_validator import AccessControl
 from app.middleware.trusted_hosts import TrustedHostMiddleware

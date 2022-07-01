@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 from enum import Enum
 
 
@@ -57,12 +58,15 @@ class ChatBoardBase(BaseModel):
 class ChatInfoId(BaseModel):
     chat_id: int
 
-# class ChatBoardList(ChatBoardBase):
-#     id: int
-#     participants: list[UserInfo] = []
 
-#     class Config:
-#         orm_mode = True
+class ChatBoardList(ChatBoardBase):
+    id: int
+    created_at: datetime
+    made_by_user: UserInfo = None
+    participants: str
+
+    class Config:
+        orm_mode = True
 
 
 """

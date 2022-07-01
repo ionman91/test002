@@ -42,9 +42,7 @@ class ProdConfig(Config):
     API_ENV: str = 'prod'
 
     DB_URL: str = environ.get('DB_URL')
-    REDIS_HOST: str = environ.get('REDIS_HOST')
-    REDIS_PORT: str = environ.get('REDIS_PORT')
-    REDIS_USER: str = environ.get('REDIS_USER')
+    REDIS_URL: str = environ.get('REDIS_URL')
     RMQ_URL: str = environ.get('RMQ_URL')
 
     EXCEPT_PATH_LIST = environ.get('EXCEPT_PATH_LIST')
