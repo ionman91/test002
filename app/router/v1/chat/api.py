@@ -70,7 +70,6 @@ async def delete_member(chat_id: int, request: Request, session: Session = Depen
 @router.get("/api/chat/get_participants/{chat_id}")
 async def get_participants(chat_id: int):
     participants = await readMember(chat_id)
-    print(f"participants member is final version === {participants}")
     return {'participants': participants}
 
 

@@ -76,7 +76,6 @@
         },
     });
     function reload_participants() {
-        console.log("read redis");
         $(".chat_participant_sect .user_info").empty();
         $.ajax({
             method: "GET",
@@ -132,7 +131,6 @@
         ws.onmessage = function (event) {
             // websocket 메세지가 도착했을 때
             const parent = $("#chatting");
-            console.log(event);
             const data = JSON.parse(event.data);
             html = "";
 
@@ -192,11 +190,9 @@
         }
     });
     function callback() {
-        console.log("beforeunload callback!");
         return "changes will be lost!";
     }
     function off() {
-        console.log("beforeunload turn off!");
         $(window).off("beforeunload");
     }
     $(window).on("beforeunload", callback);

@@ -32,7 +32,6 @@
                 contentType: "application/json",
                 success: function (datas) {
                     if (datas) {
-                        console.log(datas);
                         datas.forEach(function (data) {
                             const members = JSON.parse(data.participants);
                             list_sct.append(

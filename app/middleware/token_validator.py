@@ -93,9 +93,7 @@ class AccessControl:
             access_token = access_token.replace("Bearer ", "")
             payload = jwt.decode(access_token, key=conf().JWT_SECRET, algorithms=[conf().JWT_ALGORITHM])
         except ExpiredSignatureError:
-            print('TokenExpiredEx')
             raise ex.TokenExpiredEx()
         except DecodeError:
-            print('tokenDecodeEX')
             raise ex.TokenDecodeEx()
         return payload

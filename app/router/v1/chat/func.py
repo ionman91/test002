@@ -18,7 +18,6 @@ CHAT_REDIS_NAME = 'chat_members_in_'  # redis 에 저장할 chat members name
 # function - redis 안에 cache 한다.
 async def add_member_in_redis(chat_id: int, current_user: str):
     participants = await rd.get_value(f"{CHAT_REDIS_NAME}{chat_id}")
-    print(f"participants is === {participants} && {current_user}")
     if not participants:
         participants = [current_user]
     else:
@@ -69,14 +68,10 @@ async def addMember(chat_id: int, current_user: str, session: Session):
 async def deleteMember(chat_id: int, current_user: str, session: Session = None):
     if not session:
         session = next(db.session())
-    print("is it excute???")
     chat_room = session.query(ChatBoard).filter(ChatBoard.id == chat_id).first()
-    print(f"chat_room is {chat_room}")
     if chat_room:
         await remove_member_in_redis(chat_id, current_user)
-        print(f"is it possible execute???")
         participants = json.loads(chat_room.participants)
-        print(participants)
         participants.remove(current_user)
         if len(participants) == 0:
             session.delete(chat_room)

@@ -33,7 +33,6 @@ async def register(sns_type: SnsType, user: UserRegister, session: Session = Dep
 
 @router.post("/login/{sns_type}", status_code=200, response_model=Token)
 async def login(sns_type: SnsType, user: UserRegister):
-    print("???")
     if sns_type == SnsType.email:
         is_exist = await is_username_exist(user.username)
         if not user.username or not user.password:
@@ -60,7 +59,6 @@ async def is_username_exist(username: str):
 def create_access_token(*, data: dict = None, expires_delta: int = int(conf().EXPIRES_COOKIE_TIME)):
     to_encode = data.copy()
     if expires_delta:
-        print(datetime.utcnow() + timedelta(hours=expires_delta))
         to_encode.update({"exp": datetime.utcnow() + timedelta(hours=expires_delta)})
     encoded_jwt = jwt.encode(to_encode, conf().JWT_SECRET, algorithm=conf().JWT_ALGORITHM)
     return encoded_jwt

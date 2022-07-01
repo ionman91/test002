@@ -51,7 +51,6 @@ class ProdConfig(Config):
 
     JWT_SECRET: str = environ.get('JWT_SECRET')
     JWT_ALGORITHM: str = environ.get('JWT_ALGORITHM')
-    DB_URL: str = environ.get('DB_URL')
 
     TRUSTED_HOSTS = ["*"]
     ALLOW_SITE = ["*"]
